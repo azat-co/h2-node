@@ -1,11 +1,13 @@
+slidenumbers: true
+
 # `h2-node` or Implementing HTTP/2 Server with Node and Express
 
 ---
 
 
-# Slides & Code :page_facing_up: 💻
+# Slides 👓 :page_facing_up: 💻
 
-Everything (PDF, Markdown, Code): <https://github.com/azat-co/h2-node>
+Everything (PDF+Markdown): <https://github.com/azat-co/h2-node>
 
 ---
 
@@ -254,6 +256,120 @@ curl https://localhost:3000/ -k
 
 ---
 
+# Trivia Time
+
+---
+
+# Winner Gets Azat's Full Stack JavaScript
+
+![inline](images/fullstackjavascript.jpg)
+
+
+---
+
+# ❓
+
+---
+
+
+# Server Push—Yeah!
+
+^The way server push works is by bundling multiple assets and resources into a single HTTP/2 call. Under the hood, server will issue a PUSH_PROMISE. Clients (browsers included) can use it or not depending on if the main HTML file needs it. If yes, it needs it, then client will match received push promises to make them look like a regular HTTP/2 GET calls. Obviously, if there's a match, then no new calls will be made, but the assets already at the client will be used. Some good articles for more info on server push benefits.
+
+---
+
+
+```js
+const http2 = require('spdy')
+const logger = require('morgan')
+const express = require('express')
+const app = express()
+const fs = require('fs')
+```
+
+---
+
+
+```js
+app.use(logger('dev'))
+```
+
+
+---
+
+
+```js
+app.get('/', (req, res) => {
+  res.send(`hello, http2!
+go to /pushy`)
+})
+```
+
+---
+
+```js
+app.get('/pushy', (req, res) => {
+  var stream = res.push('/main.js', {
+    status: 200, // optional
+    method: 'GET', // optional
+    request: {
+      accept: '*/*'
+    },
+    response: {
+      'content-type': 'application/javascript'
+    }
+  })
+  stream.on('error', () => {
+  })
+  stream.end('alert("hello from push stream!");')
+  res.end('<script src="/main.js"></script>')
+})
+```
+
+---
+
+```js
+var options = {
+  key: fs.readFileSync('./server.key'),
+  cert: fs.readFileSync('./server.crt')
+}
+
+http2
+  .createServer(options, app)
+  .listen(8080, ()=>{
+    console.log(`Server is listening on https://localhost:8080.
+You can open the URL in the browser.`)
+  }
+)
+```
+
+---
+
+# Result
+
+```
+GET /pushy 200 4.918 ms - -
+```
+
+^Single request but we see alert
+
+---
+
+
+![inline](images/http2-node-server-push-simple.png)
+
+^Demo if you have time
+
+---
+
+# Code
+
+
+* <https://github.com/azat-co/http2-express>
+* <https://github.com/azat-co/http2-node-server-push>
+
+---
+
 # Want to work with Node but your boss won't let you?
 
 Capital One is hiring ~2,000 more software engineers in UK, Canada and US.
@@ -292,16 +408,16 @@ Email: hi@azat.co
 
 # 30-Second Summary
 
-1. `spdy`
-1. Express
-1. Server Push
+1. `spdy` or http2 core (soon)
+1. Express rocks
+1. Server Push - yeah!
 
 ---
 
 
-# Slides & Code :page_facing_up:
+# Slides 👓 :page_facing_up: 💻
 
-Everything: <https://github.com/azat-co/h2-node>
+Everything (PDF+Markdown): <https://github.com/azat-co/h2-node>
 
 ---
 
@@ -323,6 +439,8 @@ Check out [Node.University](http://node.university), [Webapplog.com](http://weba
 ---
 
 # One Last Thing 👉
+
+^Do the exercise
 
 ---
 

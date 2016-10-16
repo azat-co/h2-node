@@ -263,7 +263,7 @@ node server
 curl https://localhost:3000/ -k
 ```
 
-[Make sure you got the latest version 7.46 with nghttp2)](https://simonecarletti.com/blog/2016/01/http2-curl-macosx/)
+[Make sure you got the latest version 7.46 with nghttp2](https://simonecarletti.com/blog/2016/01/http2-curl-macosx/)
 
 ---
 
@@ -372,11 +372,28 @@ GET /pushy 200 4.918 ms - -
 
 ---
 
+# HTTP/2 with Node and Express
+## Server Push Express Middleware
+
+![inline 100%](images/azat.jpeg)
+Azat Mardan @azat_co
+
+![inline right](images/nu.png)
+
+---
+
+# Demo
+
+<https://github.com/azat-co/http2-node-server-push/blob/master/index-advanced.js>
+
+---
+
 # 30-Second Summary
 
 1. `spdy` or http2 core (soon)
 1. Express rocks
 1. Server Push - yeah!
+1. Server Push Express middleware 👍
 
 ---
 
